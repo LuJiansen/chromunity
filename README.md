@@ -25,7 +25,7 @@ Install mskilab R dependencies (gUtils)
 
 
 ```R
-devtools::install_github('mskilab/gUtils')
+devtools::install_github(c('mskilab/gUtils','mskilab/gTrack','mskilab/bamUtils','mskilab/gChain','mskilab/skitools'))
 ```
 
 Install chromunity
