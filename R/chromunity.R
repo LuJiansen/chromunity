@@ -748,8 +748,10 @@ chromunity = function(concatemers, resolution = 5e4, region = si2gr(concatemers)
                 cc = concatemer_communities(concatemers %Q% (binid %in% these.bins$binid), k.knn = k.knn, max.size = max.size, k.min = k.min, seed = seed, verbose = verbose>1)
                 if (length(cc))
                 {
-                    cc = cc[cc$support >= min.support] 
-                    cc$winid = win
+                    cc = cc[cc$support >= min.support]
+                    if (length(cc)) {
+                      cc$winid = win
+                    }
                 }
             })
             cc
