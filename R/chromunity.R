@@ -692,7 +692,12 @@ synergy = function(binsets, concatemers, background.binsets = NULL, model = NULL
 #' @author Aditya Deshpande, Marcin Imielinski
 #' @export
 
-chromunity = function(concatemers, resolution = 5e4, region = si2gr(concatemers), windows = NULL, piecewise = TRUE, shave = FALSE, bthresh = 3, cthresh = 3, max.size = 2^31-1, subsample.frac = NULL, window.size = 2e6, max.slice = 1e6, min.support = 5, stride = window.size/2, mc.cores = 5, k.knn = 25, k.min = 5, pad = 1e3, peak.thresh = 0.85, seed = 42, verbose = TRUE)
+chromunity = function(concatemers, resolution = 5e4,region = si2gr(concatemers),
+    windows = NULL, piecewise = TRUE,shave = FALSE, bthresh = 3,
+    cthresh = 3, max.size = 2^31-1, subsample.frac = NULL,
+    window.size = 2e6, max.slice = 1e6, min.support = 5,
+    stride = window.size/2, mc.cores = 5, k.knn = 25, k.min = 5,
+    pad = 1e3, peak.thresh = 0.85, min.peak.score = 3, seed = 42, verbose = TRUE)
 {
   if (is.null(windows))
       windows = gr.start(gr.tile(region, stride))+window.size/2
@@ -789,12 +794,16 @@ chromunity = function(concatemers, resolution = 5e4, region = si2gr(concatemers)
   if (verbose) cmessage('Analyzing gr.sums associated with ', length(uchid), ' concatemer communities to generate binsets')
 
 
-  binsets = pbmclapply(uchid, mc.cores = mc.cores, function(this.chid)
+binsets = pbmclapply(uchid, mc.cores = mc.cores, function(this.chid)
   {
     suppressWarnings({
       this.cc = cc %Q% (chid == this.chid)
       peaks = gr.sum(this.cc + pad) %>% gr.peaks('score')
-      binset = bins[, c()] %&% (peaks[peaks$score > quantile(peaks$score, peak.thresh)])
+      if (!is.null(min.peak.score)){
+        binset = bins[, c()] %&% (peaks[peaks$score > min.peak.score])
+      }else{
+        binset = bins[, c()] %&% (peaks[peaks$score > quantile(peaks$score, peak.thresh)])
+      }
       if (length(binset))
       {
         binset$chid = this.chid
