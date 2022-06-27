@@ -697,7 +697,7 @@ chromunity = function(concatemers, resolution = 5e4,region = si2gr(concatemers),
     cthresh = 3, max.size = 2^31-1, subsample.frac = NULL,
     window.size = 2e6, max.slice = 1e6, min.support = 5,
     stride = window.size/2, mc.cores = 5, k.knn = 25, k.min = 5,
-    pad = 1e3, peak.thresh = 0.85, min.peak.score = 3, seed = 42, verbose = TRUE)
+    pad = 1e3, peak.thresh = 0.85, min.peak.score = NULL, seed = 42, verbose = TRUE)
 {
   if (is.null(windows))
       windows = gr.start(gr.tile(region, stride))+window.size/2
