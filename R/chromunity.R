@@ -491,7 +491,7 @@ annotate = function(binsets, concatemers, covariates = NULL, k = 5, interchromos
   if (!is.null(covariates))
   {
     setkeyv(sub.binsets, c('bid', 'binid'))
-    if (verbose) smessage('Adding covariates')
+    if (verbose) smessage('Adding covariates in ',nrow(annotated.binsets)," sub-binsets")
     for (i in 1:length(covariates))
     {
       if (covariates$type[i] == 'numeric')
